@@ -1,0 +1,206 @@
+openapi: 3.0.1
+info:
+  title: Furniture Warehouse API
+  version: 0.1.0
+  contact:
+    name: Ciprian Buzduga
+  description: Furniture Warehouse API
+servers:
+  - url: http://localhost:{port}
+    description: local environment
+    variables:
+      port:
+        default: '8080'
+
+paths:
+  /reservations:
+    get:
+      tags:
+        - Reservation
+      summary: Return a list with the reservations
+      description: Return a list with the reservations
+      operationId: getReservations
+      responses:
+        '200':
+          $ref: '#/components/responses/ListReservations'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    post:
+      tags:
+        - Reservation
+      summary: Create a reservation
+      description: Create a new resevation
+      operationId: createResevation
+      requestBody:
+        description: Payload of resevation
+        required : true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationDTO'
+      responses:
+        '201':
+          description: A new reservation was created with success
+          headers:
+            'Location':
+              $ref: '#/components/headers/ReservationLocation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /reservations/{id}:
+    get:
+      tags:
+        - Reservation
+      summary: Return a reservation by id.
+      description: Return a reservation by id. The id is a string.
+      operationId: getReservation
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: The id of reservation
+          required: true
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ReservationDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    delete:
+      tags:
+        - Reservation
+      summary: Delete a reservation by id
+      description: Delete a reservation by id. The id is a string.
+      operationId: deleteReservation
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: The id of reservation
+          required: true
+      responses:
+        '204':
+          description: Delete a reservation with success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundError'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+components:
+  responses:
+    Unauthorized:
+      description: unauthorized
+
+    BadRequest:
+      description: bad request
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ValidationDTO'
+
+    ResourceNotFoundError:
+      description: resource not found error
+    ServerError:
+      description: internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDTO'
+
+    ListReservations:
+      description: A list of reservations
+      content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ReservationDTO'
+
+  headers:
+    ReservationLocation:
+      schema:
+        type: string
+      description: The url for access a reservation by id
+
+  schemas:
+
+    ClientDTO:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+    
+    ComponentDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+  
+    ReservationDTO:
+      type: object
+      properties:
+        client:
+          $ref: '#/components/schemas/ClientDTO'
+        productId:
+          type: string
+        productName:
+          type: string
+        price:
+          type: number
+        quantity:
+          type: integer
+          format: int32
+        components:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComponentDTO'
+
+    ValidationDTO:
+      type: object
+      properties:
+        code:
+          type: string
+        field:
+          type: string
+        description:
+          type: string
+
+    ErrorDTO:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
