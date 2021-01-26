@@ -1,6 +1,7 @@
 package ro.agilehub.javacourse.furniture.warehouse.documents;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -19,6 +20,8 @@ public class ReservationDoc {
 	
 	private Client client;
 	
+	private Consultant consultant;
+	
 	private String name;
 	
 	private BigDecimal price;
@@ -26,4 +29,6 @@ public class ReservationDoc {
 	private Integer quantity;
 	
 	private List<Component> components;
+	
+	private LocalDate reservationDate;
 }

@@ -158,6 +158,23 @@ components:
           type: string
         lastname:
           type: string
+        phone:
+          type: string
+          format: phone
+
+    ConsultantDTO:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        phone:
+          type: string
+          format: phone
+        email:
+          type: string
+          format: email
     
     ComponentDTO:
       type: object
@@ -173,6 +190,8 @@ components:
       properties:
         client:
           $ref: '#/components/schemas/ClientDTO'
+        consultant:
+          $ref: '#/components/schemas/ConsultantDTO'
         productId:
           type: string
         productName:
@@ -186,6 +205,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ComponentDTO'
+        reservationDate:
+          type: string
+          format: date
 
     ValidationDTO:
       type: object

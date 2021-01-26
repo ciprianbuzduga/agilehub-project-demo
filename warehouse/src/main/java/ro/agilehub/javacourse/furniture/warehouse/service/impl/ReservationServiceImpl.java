@@ -1,5 +1,6 @@
 package ro.agilehub.javacourse.furniture.warehouse.service.impl;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -24,6 +25,8 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public String addReservation(ReservationDTO reservationDTO) {
 		ReservationDoc reservation = mapper.mapToReservationDoc(reservationDTO);
+		if(reservation.getReservationDate() == null)
+			reservation.setReservationDate(LocalDate.now());
 		try {
 			repository.save(reservation);
 			return reservation.get_id();
