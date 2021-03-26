@@ -1,4 +1,4 @@
-package ro.agilehub.javacourse.furniture.warehouse.boot.configuration;
+package ro.agilehub.javacourse.furniture.warehouse.config;
 
 import javax.jms.ConnectionFactory;
 

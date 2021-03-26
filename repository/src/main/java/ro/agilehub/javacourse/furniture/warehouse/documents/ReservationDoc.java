@@ -10,10 +10,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@Document(collection = "reservation")
+@Document(collection = ReservationDoc.COLLECTION_NAME)
 @Data
 @EqualsAndHashCode(of = "_id")
 public class ReservationDoc {
+
+	public static final String COLLECTION_NAME = "reservation";
 
 	@Id
 	private String _id;
